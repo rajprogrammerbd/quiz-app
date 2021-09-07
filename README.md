@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# Wellcome to the repository
 
 admin: admin@gmail.com
 password: 123456
