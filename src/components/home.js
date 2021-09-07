@@ -43,6 +43,12 @@ const MainContainerRight = styled.div`
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
+    overflow: scroll;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
 `;
 
 

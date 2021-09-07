@@ -1,6 +1,5 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import Que from "./que";
-import { LoginFunctionalities } from "./../App";
 import styled from 'styled-components';
 
 const QuestionWapper = styled.div`
@@ -31,14 +30,10 @@ function Test({ login }) {
         setState(true);
     }
 
-    const closeFn = () => {
-        setState(false);
-    }
-
     return (
         <>
             <QuestionWapper>
-                { ( !start ) ? <QuestionWapperBtn className="test_btn_start" onClick={startFn}>START</QuestionWapperBtn> : <Que login={login} questions={JSON.parse(localStorage.getItem('my-database')).questions} /> }
+                { ( !start ) ? <QuestionWapperBtn className="test_btn_start" onClick={startFn}>START</QuestionWapperBtn> : <Que login={login} /> }
             </QuestionWapper>
         </>
     );

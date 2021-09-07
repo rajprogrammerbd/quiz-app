@@ -8,14 +8,14 @@ export const LoginFunctionalities = React.createContext();
 
 function App() {
 
-  const [ state, setState ] = useState({ login: null, error: false });
+  const [ state, setState ] = useState({ login: null, error: false, questions: [] });
 
   const logout = () => {
     sessionStorage.setItem('quiz-log', JSON.stringify({ login: null }));
     setState({ ...state, login: null, error: false });
   }
 
-  const setLocalStroage = objs => {
+  const setLocalStroageData = objs => {
     const data = JSON.parse(localStorage.getItem('my-database'));
     const newData = data.users.map(obj => {
       if ( obj.email === objs.login.email ) {
@@ -28,14 +28,32 @@ function App() {
     localStorage.setItem('my-database', JSON.stringify(data));
   }
 
+  const clickedDeleteBtn = id => {
+        // console.log('clicked on delete btn', id);
+        const data = JSON.parse(localStorage.getItem('my-database'));
+        data.questions = data.questions.filter(obj => obj._id !== id);
+
+        localStorage.setItem('my-database', JSON.stringify(data));
+        setState({ ...state, questions: data.questions });
+  }
+
+  const addQuestion = obj => {
+    const stroage = JSON.parse(localStorage.getItem('my-database'));
+    stroage.questions.push(obj);
+    // console.log('App.js ', stroage);
+    localStorage.setItem('my-database', JSON.stringify(stroage));
+
+    setState({ ...state, questions: stroage.questions });
+  }
+
   const addedAnswers = (arr) => {
     if ( state.login.answers.length > 0 ) {
       let localData = { ...state, login: { ...state.login, oldAnswers: [ ...state.login.oldAnswers, arr ] } };
-      setLocalStroage(localData);
+      setLocalStroageData(localData);
       setState(localData);
     } else {
       const localData = { ...state, login: { ...state.login, answers: arr } };
-      setLocalStroage(localData);
+      setLocalStroageData(localData);
       setState(localData);
     }
   }
@@ -144,18 +162,18 @@ function App() {
         localInitial = JSON.parse(localStorage.getItem('my-database'));
       }
 
-      setState({ ...state, login: sessionInitial.login });
+      setState({ ...state, login: sessionInitial.login, questions: JSON.parse(localStorage.getItem('my-database')).questions });
   }, []);
 
   return (
     <>
-      <LoginFunctionalities.Provider value={{ logout, login: state.login, error: state.error, loginFunction, addedAnswers }}>
+      <LoginFunctionalities.Provider value={{ clickedDeleteBtn, addQuestion, logout, login: state.login, error: state.error, loginFunction, addedAnswers, questions: state.questions }}>
         <Switch>
           <Route path="/not-found" component={props => <NotFound {...props} />} />
           <Route path="/questions">
             { ( state.login ) ? (
               <>
-                { ( state.login.type === "Admin" ) ? <Route path="/questions" component={props => <QuestionPage {...props} />} /> : <Redirect to="/" /> }
+                { ( state.login.type === "Admin" ) ? <Route path="/questions" component={props => <QuestionPage login={state.login} {...props} />} /> : <Redirect to="/" /> }
               </>
             ) : <Redirect to="/" /> }
           </Route>
