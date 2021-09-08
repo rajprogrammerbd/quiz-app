@@ -33,7 +33,7 @@ function Que({ login }) {
 
     return (
         <>
-            { ( state.answers.length === 4 ) ? <Success result={state.answers} /> : (
+            { ( state.answers.length === (state.collected + 1) ) ? <Success result={state.answers} /> : (
                 <>
                     { ( state.questions.length > 0 ) ? (
                         <>

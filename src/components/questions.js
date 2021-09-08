@@ -5,9 +5,9 @@ import "./questions.css";
 import Header from "./header";
 
 function QuestionPage({ login }) {
-    
+
     const { clickedDeleteBtn, questions, addQuestion } = useContext(LoginFunctionalities);
-    const [ state, setState ] = useState({  login: undefined, mainQuestions: [], questions: { start: false, question: '', first: '', second: '', third: '', forth: '', ansText: '' } });
+    const [ state, setState ] = useState({  login: undefined, users: [], mainQuestions: [], questions: { start: false, question: '', first: '', second: '', third: '', forth: '', ansText: '' } });
 
     const generatedQuestion = () => {
         const obj = {
@@ -45,9 +45,9 @@ function QuestionPage({ login }) {
     }
 
     useEffect(() => {
-        setState({ ...state, login, mainQuestions: ( Array.isArray(questions) ) ? questions : questions.questions });
+        setState({ ...state, login, users: JSON.parse(localStorage.getItem('my-database')).users, mainQuestions: ( Array.isArray(questions) ) ? questions : questions.questions });
     }, []);
-
+    
     return (
         <>
             <Header />
@@ -87,6 +87,76 @@ function QuestionPage({ login }) {
                                 </>
                             ) }
                         </div>
+
+                        <div className="users-details">
+                            { state.users.map(user => (
+                                    <div key={user._id} className="user-item">
+                                        <div className="user-top">
+                                            <div className="user-left">
+                                                <p className="name">Name: { user.name }</p>
+                                                <p className="email">Email: { user.email }</p>
+                                            </div>
+                                            
+                                            <p className="type">Type: { user.type }</p>
+                                        </div>
+
+                                        <div className="user-bottom">
+
+                                        <p className="current-title">Current answers of questions</p>
+                                            
+                                            { (user.answers.length === 0) ? (
+                                                <>
+                                                    <p className="no-items-found">No answers found</p>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <div className="bottom-current-item">
+                                                        <ul>
+                                                            { user.answers.map((ans, key) => (
+                                                                <li key={ans.id}>{ state.mainQuestions[key].question }
+                                                                    <span>&#8594; { ans.text }</span>
+                                                                </li>
+                                                            )) }
+                                                        </ul>
+                                                    </div>
+                                                </>
+                                            ) }
+
+                                            {   <>
+                                                    
+                                                    { ( user.oldAnswers ) ? (
+                                                        <>
+                                                            { (user.oldAnswers.length === 0) ? (
+                                                                <></>
+                                                            ) : (
+                                                                <>
+                                                                    <p className="old-answers-found">Old answers of questions</p>
+                                                                    { user.oldAnswers.map((arr, key) => (
+                                                                        <div key={key} className="old-items-p">
+                                                                            <ul>
+                                                                                { arr.map((ob, k) => (
+                                                                                    <li key={ob.id}>
+                                                                                        { state.mainQuestions[k].question }
+                                                                                        <span>&#8594; { ob.text }</span>
+                                                                                    </li>
+                                                                                )) }
+                                                                            </ul>
+                                                                        </div>
+                                                                    )) }
+                                                                </>
+                                                            ) }
+                                                        </>
+                                                    ) : (
+                                                        <></>
+                                                    ) }
+                                                </>
+                                            }
+                                            
+                                        </div>
+                                    </div>
+                            )) }
+                        </div>
+
                     </div>
 
                     <div className="wapper-right">

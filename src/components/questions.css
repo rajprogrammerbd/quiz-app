@@ -3,7 +3,7 @@
     max-width: 960px;
     height: 100%;
     background: inherit;
-    margin-top: 75px;
+    margin-top: 140px;
 }
 
 .question-body > .question-wapper {
@@ -158,4 +158,117 @@
     font-size: 13px;
     padding: 2px 0px;
     color: brown;
+}
+
+.question-body > .question-wapper > .wapper-left > .users-details {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.question-body > .question-wapper > .wapper-left > .users-details > .user-item {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 0.5px solid #ddd;
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+.question-body > .question-wapper > .wapper-left > .users-details > .user-item > .user-top {
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 5px;
+    border-bottom: 0.5px solid #ddd;
+}
+
+.question-body > .question-wapper > .wapper-left > .users-details > .user-item > .user-top > .user-left > .name, .email, .type {
+    font-family: inherit;
+    font-size: 12px;
+    color: #2d2d2d;
+}
+
+.question-body > .question-wapper > .wapper-left > .users-details > .user-item > .user-bottom {
+    width: 95%;
+    height: auto;
+}
+
+.question-body > .question-wapper > .wapper-left > .users-details > .user-item > .user-bottom  > .current-title {
+    font-family: inherit;
+    font-size: 12px;
+    color: chocolate;
+    margin-bottom: 3px;
+}
+
+.question-body > .question-wapper > .wapper-left > .users-details > .user-item > .user-bottom > .no-items-found {
+    font-family: inherit;
+    font-size: 13px;
+    color: #ff0000c7;
+}
+
+.question-body > .question-wapper > .wapper-left > .users-details > .user-item > .user-bottom > .bottom-current-item {
+    width: 100%;
+    height: auto;
+    margin: 10px 0px 5px 0px;
+}
+
+.question-body > .question-wapper > .wapper-left > .users-details > .user-item > .user-bottom > .bottom-current-item > ul {
+    padding-left: 22px;
+}
+
+.question-body > .question-wapper > .wapper-left > .users-details > .user-item > .user-bottom > .bottom-current-item > ul > li {
+    font-family: inherit;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    background: brown;
+}
+
+.question-body > .question-wapper > .wapper-left > .users-details > .user-item > .user-bottom > .bottom-current-item > ul > li  > span {
+    color: #89ccec;
+    background: indianred;
+    padding-left: 5px;
+}
+
+.question-body > .question-wapper > .wapper-left > .users-details > .user-item > .user-bottom > .old-answers-found {
+    font-family: inherit;
+    font-size: 12px;
+    color: chocolate;
+    margin-bottom: 11px;
+    margin-top: 14px;
+}
+
+.question-body > .question-wapper > .wapper-left > .users-details > .user-item > .user-bottom > .old-items-p {
+    width: 100%;
+    height: auto;
+    margin: 10px 0px 5px 0px;
+}
+
+.question-body > .question-wapper > .wapper-left > .users-details > .user-item > .user-bottom > .old-items-p > ul {
+    padding-left: 22px;
+}
+
+.question-body > .question-wapper > .wapper-left > .users-details > .user-item > .user-bottom > .old-items-p > ul > li {
+    font-family: inherit;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    background: #3489bb;
+}
+
+.question-body > .question-wapper > .wapper-left > .users-details > .user-item > .user-bottom > .old-items-p > ul > li > span {
+    color: #fdfdfd;
+    background: #27695d;
+    padding-left: 5px;
 }

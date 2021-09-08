@@ -29,7 +29,7 @@ function App() {
   }
 
   const clickedDeleteBtn = id => {
-        // console.log('clicked on delete btn', id);
+        console.log('clicked on delete btn', id);
         const data = JSON.parse(localStorage.getItem('my-database'));
         data.questions = data.questions.filter(obj => obj._id !== id);
 
@@ -85,6 +85,15 @@ function App() {
         sessionStorage.setItem('quiz-log', JSON.stringify(sessionInitial));
       } else {
         sessionInitial = JSON.parse(sessionStorage.getItem('quiz-log'));
+
+        if ( localStorage.getItem('my-database') !== null ) {
+          let store = JSON.parse(localStorage.getItem('my-database'));
+          sessionInitial.login.answers = store.users.find(v => v.email === sessionInitial.login.email).answers;
+          sessionInitial.login.oldAnswers = store.users.find(v => v.email === sessionInitial.login.email).oldAnswers;
+
+          sessionStorage.setItem('quiz-log', JSON.stringify(sessionInitial));
+        }
+
       }
 
 

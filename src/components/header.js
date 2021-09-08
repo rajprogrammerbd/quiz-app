@@ -12,6 +12,7 @@ const HeaderDiv = styled.header`
     box-shadow: 1px 1px 9px 0px #eaeaea;
     position: fixed;
     top: 0;
+    background: #fff;
 `;
 
 const HeaderContainer = styled.div`
@@ -41,7 +42,7 @@ const HeaderContainerRight = styled.div`
     justify-content: flex-end;
 `;
 
-const HContentTitle = styled.a`
+const HContentTitle = styled(Link)`
     font-family: inherit;
     font-weight: lighter;
     font-size: 17px;
@@ -80,7 +81,7 @@ function Header() {
         <HeaderDiv>
             <HeaderContainer>
                 <HeaderContainerLeft>
-                    <HContentTitle href="/">Quiz App</HContentTitle>
+                    <HContentTitle to="/">Quiz App</HContentTitle>
                 </HeaderContainerLeft>
 
                 <HeaderContainerRight>
