@@ -4,7 +4,7 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import "./questions.css";
 import Header from "./header";
 
-function QuestionPage({ login }) {
+function QuestionPage({ login, peoples }) {
 
     const { clickedDeleteBtn, questions, addQuestion } = useContext(LoginFunctionalities);
     const [ state, setState ] = useState({  login: undefined, users: [], mainQuestions: [], questions: { start: false, question: '', first: '', second: '', third: '', forth: '', ansText: '' } });
@@ -45,7 +45,7 @@ function QuestionPage({ login }) {
     }
 
     useEffect(() => {
-        setState({ ...state, login, users: JSON.parse(localStorage.getItem('my-database')).users, mainQuestions: ( Array.isArray(questions) ) ? questions : questions.questions });
+        setState({ ...state, login, users: peoples, mainQuestions: ( Array.isArray(questions) ) ? questions : questions.questions });
     }, []);
     
     return (

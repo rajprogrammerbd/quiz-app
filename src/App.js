@@ -3,12 +3,12 @@ import Home from "./components/home";
 import { Switch, Route, Redirect } from 'react-router-dom';
 import NotFound from "./components/notFound";
 import QuestionPage from "./components/questions";
-
+import Error from './components/Error';
 export const LoginFunctionalities = React.createContext();
 
 function App() {
 
-  const [ state, setState ] = useState({ login: null, error: false, questions: [] });
+  const [ state, setState ] = useState({ login: null, error: false, questions: [], users: [] });
 
   const logout = () => {
     sessionStorage.setItem('quiz-log', JSON.stringify({ login: null }));
@@ -29,12 +29,26 @@ function App() {
   }
 
   const clickedDeleteBtn = id => {
-        console.log('clicked on delete btn', id);
         const data = JSON.parse(localStorage.getItem('my-database'));
         data.questions = data.questions.filter(obj => obj._id !== id);
+        data.users = data.users.map(obj => {
+          obj.answers = obj.answers.filter(o => o.questionId !== id);
+		  obj.oldAnswers = obj.oldAnswers.map(arr => {
+			  
 
-        localStorage.setItem('my-database', JSON.stringify(data));
-        setState({ ...state, questions: data.questions });
+			  arr =arr.filter(o => {
+				  if ( o.questionId !== id ) {
+					  return o;
+				  }
+			  });			  
+			  return arr;
+		  });
+
+          return obj;
+        });
+
+      localStorage.setItem('my-database', JSON.stringify(data));
+      setState({ ...state, questions: data.questions, users: data.users });
   }
 
   const addQuestion = obj => {
@@ -47,12 +61,30 @@ function App() {
   }
 
   const addedAnswers = (arr) => {
-    if ( state.login.answers.length > 0 ) {
-      let localData = { ...state, login: { ...state.login, oldAnswers: [ ...state.login.oldAnswers, arr ] } };
+    if ( state.login.answers.length === 0 ) {
+      let localData = { ...state, login: { ...state.login, answers: arr, oldAnswers: [ ...state.login.oldAnswers ] } };
+	  localData.users = localData.users.map(ob => {
+		  if ( ob.email === state.login.email ) {
+			  ob.oldAnswers = [ ...state.login.oldAnswers ];
+			  ob.answers = arr;
+		  }
+		  return ob;
+	  });
+	
+	  
       setLocalStroageData(localData);
       setState(localData);
     } else {
-      const localData = { ...state, login: { ...state.login, answers: arr } };
+      const localData = { ...state, login: { ...state.login, oldAnswers: [...state.login.oldAnswers, arr] } };
+	  
+		localData.users = localData.users.map(ob => {
+			if ( ob.email === state.login.email ) {
+			  ob.oldAnswers = [...state.login.oldAnswers, arr];
+			  ob.answers = arr;
+			}
+			return ob;
+		});
+		
       setLocalStroageData(localData);
       setState(localData);
     }
@@ -73,28 +105,31 @@ function App() {
     }
   }
 
-  useEffect(() => {
-    let sessionInitial;
-    let localInitial;
+    useEffect(() => {
+      let sessionInitial;
+      let localInitial;
 
-      if ( sessionStorage.getItem('quiz-log') === null ) {
-        sessionInitial = {
-          login: null
-        }
-
-        sessionStorage.setItem('quiz-log', JSON.stringify(sessionInitial));
-      } else {
-        sessionInitial = JSON.parse(sessionStorage.getItem('quiz-log'));
-
-        if ( localStorage.getItem('my-database') !== null ) {
-          let store = JSON.parse(localStorage.getItem('my-database'));
-          sessionInitial.login.answers = store.users.find(v => v.email === sessionInitial.login.email).answers;
-          sessionInitial.login.oldAnswers = store.users.find(v => v.email === sessionInitial.login.email).oldAnswers;
+        if ( JSON.parse(sessionStorage.getItem('quiz-log')) === null ) {
+          sessionInitial = {
+            login: null
+          }
 
           sessionStorage.setItem('quiz-log', JSON.stringify(sessionInitial));
-        }
+        } else {
+          sessionInitial = JSON.parse(sessionStorage.getItem('quiz-log'));
 
-      }
+          if ( JSON.parse(sessionStorage.getItem('quiz-log')).login === null ) {
+
+          } else {
+            if ( localStorage.getItem('my-database') !== null ) {
+              let store = JSON.parse(localStorage.getItem('my-database'));
+              sessionInitial.login.answers = store.users.find(v => v.email === sessionInitial.login.email).answers;
+              sessionInitial.login.oldAnswers = store.users.find(v => v.email === sessionInitial.login.email).oldAnswers;
+    
+              sessionStorage.setItem('quiz-log', JSON.stringify(sessionInitial));
+            }
+          }
+        }
 
 
       if ( localStorage.getItem('my-database') === null ) {
@@ -171,24 +206,26 @@ function App() {
         localInitial = JSON.parse(localStorage.getItem('my-database'));
       }
 
-      setState({ ...state, login: sessionInitial.login, questions: JSON.parse(localStorage.getItem('my-database')).questions });
+      setState({ ...state, users: JSON.parse(localStorage.getItem('my-database')).users, login: sessionInitial.login, questions: JSON.parse(localStorage.getItem('my-database')).questions });
   }, []);
 
   return (
     <>
       <LoginFunctionalities.Provider value={{ clickedDeleteBtn, addQuestion, logout, login: state.login, error: state.error, loginFunction, addedAnswers, questions: state.questions }}>
+        <Error>
         <Switch>
-          <Route path="/not-found" component={props => <NotFound {...props} />} />
-          <Route path="/questions">
-            { ( state.login ) ? (
-              <>
-                { ( state.login.type === "Admin" ) ? <Route path="/questions" component={props => <QuestionPage login={state.login} {...props} />} /> : <Redirect to="/" /> }
-              </>
-            ) : <Redirect to="/" /> }
-          </Route>
-          <Route path="/" exact component={props => <Home {...props} login={state.login} loginFunction={loginFunction} error={state.error} />} />
-          <Redirect to="not-found" />
-        </Switch>
+            <Route path="/not-found" component={props => <NotFound {...props} />} />
+            <Route path="/questions">
+              { ( state.login ) ? (
+                <>
+                  { ( state.login.type === "Admin" ) ? <Route path="/questions" component={props => <QuestionPage peoples={state.users} login={state.login} {...props} />} /> : <Redirect to="/" /> }
+                </>
+              ) : <Redirect to="/" /> }
+            </Route>
+            <Route path="/" exact component={props => <Home {...props} login={state.login} loginFunction={loginFunction} error={state.error} />} />
+            <Redirect to="not-found" />
+          </Switch>
+        </Error>
       </LoginFunctionalities.Provider>
     </>
   );
