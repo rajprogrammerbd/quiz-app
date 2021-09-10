@@ -9,6 +9,11 @@ class Error extends React.Component {
         }
     }
 
+    componentDidMount() {
+        sessionStorage.removeItem('quiz-log');
+        localStorage.removeItem('my-database');
+    }
+
     static getDerivedStateFromError(error) {
         return {
             hasError: true
