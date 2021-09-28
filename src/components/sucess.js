@@ -31,8 +31,8 @@ function Success({ result }) {
     
     return (
         <>
-            <SucessMessage>Sucess Message</SucessMessage>
-            <LinkAncor onClick={submit}>Home</LinkAncor>
+            <SucessMessage>Are you sure?</SucessMessage>
+            <LinkAncor onClick={submit}>Finally Submit</LinkAncor>
         </>
     );
 }

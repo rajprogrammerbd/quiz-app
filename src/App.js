@@ -29,14 +29,24 @@ function App() {
   }
 
   const clickedDeleteBtn = id => {
-        const data = JSON.parse(localStorage.getItem('my-database'));
-        data.questions = data.questions.filter(obj => obj._id !== id);
-        data.users = data.users.map(obj => {
-          obj.answers = obj.answers.filter(o => o.questionId !== id);
-		  obj.oldAnswers = obj.oldAnswers.map(arr => {
-			  
+    const data = JSON.parse(localStorage.getItem('my-database'));
+    data.questions = data.questions.filter(obj => obj._id !== id);
 
-			  arr =arr.filter(o => {
+    const stateMainAnswers = state.login.answers.filter(obj => obj.questionId !== id);
+
+    const stateOldAnswers = state.login.oldAnswers.map(arr => {
+      arr = arr.filter(o => {
+        if ( o.questionId !== id ) {
+          return o;
+        }
+      });			  
+      return arr;
+    });
+
+    data.users = data.users.map(obj => {
+      obj.answers = obj.answers.filter(o => o.questionId !== id);
+		  obj.oldAnswers = obj.oldAnswers.map(arr => {
+			  arr = arr.filter(o => {
 				  if ( o.questionId !== id ) {
 					  return o;
 				  }
@@ -44,17 +54,16 @@ function App() {
 			  return arr;
 		  });
 
-          return obj;
-        });
+      return obj;
+    });
 
       localStorage.setItem('my-database', JSON.stringify(data));
-      setState({ ...state, questions: data.questions, users: data.users });
+      setState({ ...state, login: { ...state.login, answers: stateMainAnswers, oldAnswers: stateOldAnswers }, questions: data.questions, users: data.users });
   }
 
   const addQuestion = obj => {
     const stroage = JSON.parse(localStorage.getItem('my-database'));
     stroage.questions.push(obj);
-    // console.log('App.js ', stroage);
     localStorage.setItem('my-database', JSON.stringify(stroage));
 
     setState({ ...state, questions: stroage.questions });

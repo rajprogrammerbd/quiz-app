@@ -11,13 +11,13 @@ function QuestionPage({ login, peoples }) {
 
     const generatedQuestion = () => {
         const obj = {
-            _id: `q-${questions.length + 1}`,
+            _id: `s-${questions.length + 1}`,
             question: state.questions.question,
             options: [ 
-                { id: `q-${questions.length + 1}-1`, text: state.questions.first }, 
-                { id: `q-${questions.length + 1}-2`, text: state.questions.second },
-                { id: `q-${questions.length + 1}-3`, text: state.questions.third },
-                { id: `q-${questions.length + 1}-4`, text: state.questions.forth }
+                { id: `s-${questions.length + 1}-1`, text: state.questions.first }, 
+                { id: `s-${questions.length + 1}-2`, text: state.questions.second },
+                { id: `s-${questions.length + 1}-3`, text: state.questions.third },
+                { id: `s-${questions.length + 1}-4`, text: state.questions.forth }
             ],
             answers: undefined
         }
