@@ -16,4 +16,4 @@ npm install
 npm start
 ```
 
-This site was built using [Netify Pages](https://rajprogrammerquiz.netlify.app/).
+This site was built using Netify Pages, [Click here to visit the page](https://rajprogrammerquiz.netlify.app/).
