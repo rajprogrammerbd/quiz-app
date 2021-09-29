@@ -214,7 +214,7 @@ function App() {
       } else {
         localInitial = JSON.parse(localStorage.getItem('my-database'));
       }
-
+      document.title = "Quiz-App";
       setState({ ...state, users: JSON.parse(localStorage.getItem('my-database')).users, login: sessionInitial.login, questions: JSON.parse(localStorage.getItem('my-database')).questions });
   }, []);
 
